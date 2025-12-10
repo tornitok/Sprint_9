@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  selenoid:
+    image: aerokube/selenoid:latest-release
+    ports:
+      - "4444:4444"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./selenoid/:/etc/selenoid/"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=/opt/selenoid/video
+    command: ["-limit", "5", "-retry-count", "1"]
+
+  selenoid-ui:
+    image: aerokube/selenoid-ui:latest-release
+    links:
+      - selenoid
+    ports:
+      - "8080:8080"
+    command: ["--selenoid-uri", "http://selenoid:4444"]
+
+# Place browser.json under ./selenoid/browser.json with Chrome 128 image as per instructions
+
