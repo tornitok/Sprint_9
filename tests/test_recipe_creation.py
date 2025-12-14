@@ -1,4 +1,3 @@
-"""Тесты для функционала создания рецепта"""
 import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 from pages.home_page import HomePage
@@ -10,7 +9,6 @@ from data.test_data import EXISTING_USER_LOGIN, RECIPE_DATA
 @allure.feature("Recipe Management")
 @allure.story("Recipe Creation")
 class TestRecipeCreation:
-    """Тесты для функционала создания рецепта"""
 
     @allure.title("Создание рецепта с корректными данными")
     @allure.description("""
@@ -29,8 +27,6 @@ class TestRecipeCreation:
        - Отображается ли название, которое заполняли при создании
     """)
     def test_create_recipe(self, driver: WebDriver, base_url: str):
-        """Тест создания нового рецепта"""
-        # Тестовые данные из модуля
         test_username = EXISTING_USER_LOGIN["username"]
         test_password = EXISTING_USER_LOGIN["password"]
         recipe_name = RECIPE_DATA["name"]
@@ -40,7 +36,6 @@ class TestRecipeCreation:
         ingredient_quantity = RECIPE_DATA["ingredient_quantity"]
         file_path = RECIPE_DATA["file_path"]
 
-        # Прикрепить данные к отчёту Allure
         allure.attach(
             f"Recipe Name: {recipe_name}\n"
             f"Ingredient: {ingredient_name}\n"
@@ -50,11 +45,9 @@ class TestRecipeCreation:
             attachment_type=allure.attachment_type.TEXT
         )
 
-        # Шаг 1: Открыть главную страницу
         with allure.step("Открыть главную страницу"):
             driver.get(base_url)
 
-        # Шаг 2: Авторизоваться
         with allure.step("Авторизоваться"):
             home_page = HomePage(driver)
             home_page.click_login_link()
@@ -65,12 +58,10 @@ class TestRecipeCreation:
                 password=test_password
             )
 
-        # Шаг 3: Перейти на таб «Создать рецепт»
         with allure.step("Перейти на таб 'Создать рецепт'"):
             home_page = HomePage(driver)
             home_page.click_create_recipe_tab()
 
-        # Шаг 4: Заполнить форму создания рецепта
         with allure.step("Заполнить форму создания рецепта"):
             recipe_page = RecipePage(driver)
             recipe_page.create_recipe(
@@ -82,18 +73,15 @@ class TestRecipeCreation:
                 file_path = "./assets/mental_health_35.jpeg"
             )
 
-        # Шаг 5: Проверить отображение карточки созданного рецепта
         with allure.step("Проверить отображение карточки созданного рецепта"):
             recipe_page = RecipePage(driver)
             assert recipe_page.is_recipe_card_visible(), \
                 "Карточка созданного рецепта не видна на странице"
 
-        # Шаг 6: Проверить отображение названия рецепта
         with allure.step("Проверить отображение названия рецепта"):
             assert recipe_page.is_recipe_title_contains(recipe_name), \
                 f"Название рецепта '{recipe_name}' не найдено на странице"
 
-        # Приложить скриншот
         allure.attach(
             driver.get_screenshot_as_png(),
             name="recipe_created_success",

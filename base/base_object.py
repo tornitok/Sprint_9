@@ -11,7 +11,6 @@ class BaseObject:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
-    # --- ожидания ---
     def _is_visible(self, locator: tuple[str, str]) -> WebElement:
         return self.wait.until(ec.visibility_of_element_located(locator))
 
@@ -36,8 +35,6 @@ class BaseObject:
 
     def _url_contains(self, text: str) -> bool:
         return self.wait.until(lambda d: text in d.current_url)
-
-    # --- действия ---
     def click(self, locator: tuple[str, str], ensure_clickable=True) -> None:
         element = self._is_clickable(locator) if ensure_clickable else self._is_present(locator)
         try:
