@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  selenoid:
+    image: aerokube/selenoid:latest
+    container_name: selenoid
+    ports:
+      - "4444:4444"
+    volumes:
+      - /tmp/selenoid:/etc/selenoid
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - OVERRIDE_VIDEO_SCREEN_WIDTH=1920
+      - OVERRIDE_VIDEO_SCREEN_HEIGHT=1080
+    command: ["-limit", "5", "-timeout", "30m"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - test-network
+
+  selenoid-ui:
+    image: aerokube/selenoid-ui:latest
+    container_name: selenoid-ui
+    ports:
+      - "8080:8080"
+    depends_on:
+      - selenoid
+    environment:
+      - SELENOID_URI=http://selenoid:4444
+    networks:
+      - test-network
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ui-tests
+    depends_on:
+      selenoid:
+        condition: service_healthy
+    environment:
+      BASE_URL: ${BASE_URL:-https://foodgram-frontend-1.prakticum-team.ru/signin}
+      SELENIUM_URL: http://selenoid:4444/wd/hub
+      USER_NAME: ${USER_NAME:-Test_USer}
+      PASSWORD: ${PASSWORD:-09871234Link@}
+    volumes:
+      - ./allure-results:/app/allure-results
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
+
+
