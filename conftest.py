@@ -5,8 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from config import BASE_URL
 
-USE_SELENOID = os.getenv("USE_SELENOID", "false").lower() == "true"
-SELENOID_URL = os.getenv("SELENOID_URI", "http://localhost:4444/wd/hub")
+SELENIUM_URL = os.getenv("SELENIUM_URL", "http://localhost:4444/wd/hub")
 
 
 @pytest.fixture(scope="function")
@@ -15,24 +14,19 @@ def driver() -> Generator[WebDriver, None, None]:
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
-    options.add_argument("--start-maximized")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("start-maximized")
 
-    if USE_SELENOID:
-        driver = webdriver.Remote(
-            command_executor=SELENOID_URL,
-            options=options
-        )
-    else:
-        try:
-            driver = webdriver.Chrome(options=options)
-        except Exception:
-            driver = webdriver.Remote(
-                command_executor=SELENOID_URL,
-                options=options
-            )
+    options.set_capability("acceptSslCerts", True)
+    options.set_capability("acceptInsecureCerts", True)
+
+    driver = webdriver.Remote(
+        command_executor=SELENIUM_URL,
+        options=options
+    )
 
     driver.maximize_window()
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(10)
     yield driver
     driver.quit()
 

@@ -33,15 +33,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Wait for Selenium Grid to be ready
+        run: |
+          for i in {1..30}; do
+            curl -f http://localhost:4444/wd/hub/status && echo "Selenium Grid is ready!" && break
+            echo "Waiting for Selenium Grid... ($i/30)"
+            sleep 2
+          done
+
       - name: Run UI tests with pytest (Allure results)
         env:
-          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          BASE_URL: ${{ secrets.APP_BASE_URL }}
+          SELENIUM_URL: http://localhost:4444/wd/hub
           USER_NAME: ${{ secrets.USER_NAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          SELENOID_URL: http://localhost:4444/wd/hub
-          BASE_URL: ${{ secrets.APP_BASE_URL }}
         run: |
-          pytest tests/ -v --alluredir=allure-results
+          pytest tests/ -v --tb=short --alluredir=allure-results
 
       - name: Upload Allure results
         uses: actions/upload-artifact@v4
