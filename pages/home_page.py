@@ -14,8 +14,12 @@ class HomePage(BaseObject):
     def click_login_link(self) -> None:
         self.click(self.LOGIN_LINK)
 
-    def is_logout_button_visible(self) -> None:
-        self._is_visible(self.LOGOUT_BUTTON)
+    def is_logout_button_visible(self) -> bool:
+        try:
+            self._is_visible(self.LOGOUT_BUTTON)
+            return True
+        except Exception:
+            return False
 
     def click_create_recipe_tab(self) -> None:
         self.click(self.CREATE_RECIPE_TAB)
