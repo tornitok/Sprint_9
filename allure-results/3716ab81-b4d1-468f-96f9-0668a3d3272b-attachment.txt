@@ -1,0 +1,4 @@
+Recipe Name: Тестовый рецепт
+Ingredient: Масло
+Quantity: 100
+Cooking Time: 30
