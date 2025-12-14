@@ -22,18 +22,15 @@ def driver() -> Generator[WebDriver, None, None]:
 
     if USE_SELENOID:
         # Используем Remote WebDriver для Selenoid
-        print("\n🐳 Используется Selenoid на", SELENOID_URL)
         driver = webdriver.Remote(
             command_executor=SELENOID_URL,
             options=options
         )
     else:
         # Используем локальный Chrome
-        print("\n💻 Используется локальный Chrome")
         try:
             driver = webdriver.Chrome(options=options)
-        except Exception as e:
-            print(f"⚠️  Локальный Chrome не найден, пробуем Remote: {e}")
+        except Exception:
             driver = webdriver.Remote(
                 command_executor=SELENOID_URL,
                 options=options

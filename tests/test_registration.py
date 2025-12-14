@@ -1,24 +1,9 @@
 """Тесты для функционала регистрации пользователя"""
 import allure
-import uuid
-import time
 from selenium.webdriver.remote.webdriver import WebDriver
 from pages.home_page import HomePage
 from pages.registration_page import RegistrationPage
-
-
-def generate_unique_email() -> str:
-    """Генерировать уникальный email на основе временной метки и UUID"""
-    timestamp = int(time.time() * 1000)  # Миллисекунды
-    unique_id = str(uuid.uuid4())[:8]    # Первые 8 символов UUID
-    return f"testuser_{timestamp}_{unique_id}@example.com"
-
-
-def generate_unique_username() -> str:
-    """Генерировать уникальное имя пользователя на основе временной метки и UUID"""
-    timestamp = int(time.time() * 1000)  # Миллисекунды
-    unique_id = str(uuid.uuid4())[:8]    # Первые 8 символов UUID
-    return f"testuser_{timestamp}_{unique_id}"
+from data.test_data import generate_unique_email, generate_unique_username, REGISTRATION_DATA
 
 
 @allure.feature("Authentication")
@@ -41,9 +26,9 @@ class TestUserRegistration:
         # Генерировать уникальные данные для каждого запуска
         test_email = generate_unique_email()
         test_username = generate_unique_username()
-        test_first_name = "Test_AUTO"
-        test_last_name = "User_AUTO"
-        test_password = "TestPassword123!"
+        test_first_name = REGISTRATION_DATA["first_name"]
+        test_last_name = REGISTRATION_DATA["last_name"]
+        test_password = REGISTRATION_DATA["password"]
 
         # Прикрепить данные к отчёту Allure
         allure.attach(

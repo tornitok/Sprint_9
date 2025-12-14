@@ -4,6 +4,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.recipe_page import RecipePage
+from data.test_data import EXISTING_USER_LOGIN, RECIPE_DATA
 
 
 @allure.feature("Recipe Management")
@@ -29,14 +30,15 @@ class TestRecipeCreation:
     """)
     def test_create_recipe(self, driver: WebDriver, base_url: str):
         """Тест создания нового рецепта"""
-        # Тестовые данные
-        test_username = "Test_USer"
-        test_password = "09871234Link@"
-        recipe_name = "Тестовый рецепт_1"
-        recipe_description = "Это тестовое описание рецепта"
-        cooking_time = "30"
-        ingredient_name = "масло авокадо"
-        ingredient_quantity = "100"
+        # Тестовые данные из модуля
+        test_username = EXISTING_USER_LOGIN["username"]
+        test_password = EXISTING_USER_LOGIN["password"]
+        recipe_name = RECIPE_DATA["name"]
+        recipe_description = RECIPE_DATA["description"]
+        cooking_time = RECIPE_DATA["cooking_time"]
+        ingredient_name = RECIPE_DATA["ingredient_name"]
+        ingredient_quantity = RECIPE_DATA["ingredient_quantity"]
+        file_path = RECIPE_DATA["file_path"]
 
         # Прикрепить данные к отчёту Allure
         allure.attach(
@@ -97,4 +99,3 @@ class TestRecipeCreation:
             name="recipe_created_success",
             attachment_type=allure.attachment_type.PNG
         )
-

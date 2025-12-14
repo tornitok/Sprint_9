@@ -1,10 +1,10 @@
 """Тесты для функционала авторизации пользователя"""
-from time import sleep
 
 import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
+from data.test_data import EXISTING_USER_LOGIN
 
 
 @allure.feature("Authentication")
@@ -24,9 +24,9 @@ class TestUserLogin:
     """)
     def test_login(self, driver: WebDriver, base_url: str):
         """Тест авторизации пользователя"""
-        # Тестовые данные
-        test_username = "Test_USer"
-        test_password = "09871234Link@"
+        # Тестовые данные из модуля
+        test_username = EXISTING_USER_LOGIN["username"]
+        test_password = EXISTING_USER_LOGIN["password"]
 
         # Прикрепить данные к отчёту Allure
         allure.attach(
@@ -54,7 +54,6 @@ class TestUserLogin:
 
         # Шаг 4: Проверить переход на главную страницу
         with allure.step("Проверить переход на главную страницу"):
-            sleep(2)
             login_page.is_url_valid()
 
         # Шаг 5: Проверить наличие кнопки «Выход»
@@ -69,4 +68,3 @@ class TestUserLogin:
             name="login_success",
             attachment_type=allure.attachment_type.PNG
         )
-
