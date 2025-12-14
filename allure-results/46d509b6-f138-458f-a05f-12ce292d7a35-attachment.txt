@@ -1,4 +1,0 @@
-Recipe Name: Тестовый рецепт
-Ingredient: масло
-Quantity: 100
-Cooking Time: 30

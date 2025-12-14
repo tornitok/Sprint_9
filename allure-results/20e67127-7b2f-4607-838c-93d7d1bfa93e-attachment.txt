@@ -1,4 +1,0 @@
-Recipe Name: Тестовый рецепт_1
-Ingredient: масло авокадо
-Quantity: 100
-Cooking Time: 30

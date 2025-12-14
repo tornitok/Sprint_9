@@ -10,12 +10,8 @@ class LoginPage(BaseObject):
     REGISTRATION_LINK = (By.XPATH, "//a[contains(text(), 'Создать аккаунт')]")
     LOGIN_FORM = (By.XPATH, "//form")
 
-    def is_login_form_visible(self) -> bool:
-        try:
-            self._is_visible(self.LOGIN_FORM)
-            return True
-        except Exception:
-            return False
+    def is_login_form_visible(self) -> None:
+        self._is_visible(self.LOGIN_FORM)
 
     def fill_username(self, username: str) -> None:
         self.send_keys(self.USERNAME_INPUT, username)
