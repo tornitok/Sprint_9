@@ -17,8 +17,6 @@ def driver() -> Generator[WebDriver, None, None]:
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("start-maximized")
 
-    options.set_capability("acceptSslCerts", True)
-    options.set_capability("acceptInsecureCerts", True)
 
     driver = webdriver.Remote(
         command_executor=SELENIUM_URL,
