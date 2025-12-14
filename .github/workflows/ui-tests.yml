@@ -41,6 +41,14 @@ jobs:
             sleep 2
           done
 
+      - name: Check project structure
+        run: |
+          echo "Checking project structure..."
+          ls -la tests/
+          ls -la pages/
+          ls -la base/
+          python -m pytest --version
+
       - name: Run UI tests with pytest (Allure results)
         env:
           BASE_URL: ${{ secrets.APP_BASE_URL }}
