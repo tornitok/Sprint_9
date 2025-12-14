@@ -35,11 +35,13 @@ jobs:
 
       - name: Run UI tests with pytest (Allure results)
         env:
-          APP_BASE_URL: ${{ vars.APP_BASE_URL }}
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
           SELENOID_URL: http://localhost:4444/wd/hub
-          HEADLESS: "1"
+          BASE_URL: ${{ secrets.APP_BASE_URL }}
         run: |
-          pytest tests/ui -q --alluredir=allure-results
+          pytest tests/ -v --alluredir=allure-results
 
       - name: Upload Allure results
         uses: actions/upload-artifact@v4
