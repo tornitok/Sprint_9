@@ -56,7 +56,14 @@ jobs:
           USER_NAME: ${{ secrets.USER_NAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          pytest tests/ -v --tb=short --alluredir=allure-results
+          if [ -d "tests" ]; then
+            echo "Running tests from 'tests/' directory..."
+            pytest tests/ -v --tb=short --alluredir=allure-results
+          else
+            echo "ERROR: tests directory not found!"
+            ls -la
+            exit 1
+          fi
 
       - name: Upload Allure results
         uses: actions/upload-artifact@v4
