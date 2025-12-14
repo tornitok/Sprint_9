@@ -41,6 +41,17 @@ jobs:
             sleep 2
           done
 
+      - name: Debug - Check tests directory
+        run: |
+          echo "Current directory:"
+          pwd
+          echo ""
+          echo "Contents of repository:"
+          ls -la
+          echo ""
+          echo "Contents of tests directory:"
+          ls -la tests/
+
       - name: Run UI tests with pytest
         env:
           BASE_URL: ${{ secrets.APP_BASE_URL }}
@@ -48,6 +59,7 @@ jobs:
           USER_NAME: ${{ secrets.USER_NAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
+          echo "Starting pytest with tests/ directory..."
           pytest tests/ -v --tb=short --alluredir=allure-results
 
       - name: Upload Allure results
