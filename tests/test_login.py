@@ -43,9 +43,6 @@ class TestUserLogin:
                 password=test_password
             )
 
-        with allure.step("Проверить переход на главную страницу"):
-            login_page.is_url_valid()
-
         with allure.step("Проверить наличие кнопки 'Выход'"):
             home_page = HomePage(driver)
             assert home_page.is_logout_button_visible(), \

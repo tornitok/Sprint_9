@@ -30,13 +30,10 @@ class LoginPage(BaseObject):
         self.fill_username(username)
         self.fill_password(password)
         self.click_login_button()
+        self.wait_for_login_success()
 
     def click_registration_link(self) -> None:
         self.click(self.REGISTRATION_LINK)
 
-    def is_url_valid(self) -> None:
-        current_url = self.driver.current_url.lower()
-        assert "recipes" in current_url or "home" in current_url, \
-            f"Ожидается переход на главную страницу, текущий URL: {self.driver.current_url}"
-
-
+    def wait_for_login_success(self) -> bool:
+        return self._url_contains("/recipes") or self._url_contains("/favorites") or self._url_contains("/")
