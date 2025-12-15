@@ -2,6 +2,7 @@ import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
+from config import BASE_URL
 from data.test_data import EXISTING_USER_LOGIN
 
 
@@ -19,7 +20,7 @@ class TestUserLogin:
        - Произошёл ли переход на главную страницу
        - Отображается ли кнопка «Выход»
     """)
-    def test_login(self, driver: WebDriver, base_url: str):
+    def test_login(self, driver: WebDriver):
         test_username = EXISTING_USER_LOGIN["username"]
         test_password = EXISTING_USER_LOGIN["password"]
 
@@ -30,7 +31,7 @@ class TestUserLogin:
         )
 
         with allure.step("Открыть главную страницу"):
-            driver.get(base_url)
+            driver.get(BASE_URL)
 
         with allure.step("Нажать кнопку 'Войти'"):
             home_page = HomePage(driver)

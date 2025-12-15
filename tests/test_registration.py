@@ -2,7 +2,9 @@ import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 from pages.home_page import HomePage
 from pages.registration_page import RegistrationPage
-from data.test_data import generate_unique_email, generate_unique_username, REGISTRATION_DATA
+from config import BASE_URL
+from utils.data_generator import generate_unique_email, generate_unique_username
+from data.test_data import REGISTRATION_DATA
 
 
 @allure.feature("Authentication")
@@ -19,7 +21,7 @@ class TestUserRegistration:
        - Произошёл ли переход на страницу авторизации
        - Отображается ли форма авторизации
     """)
-    def test_create_account(self, driver: WebDriver, base_url: str):
+    def test_create_account(self, driver: WebDriver):
         test_email = generate_unique_email()
         test_username = generate_unique_username()
         test_first_name = REGISTRATION_DATA["first_name"]
@@ -33,7 +35,7 @@ class TestUserRegistration:
         )
 
         with allure.step("Открыть главную страницу"):
-            driver.get(base_url)
+            driver.get(BASE_URL)
 
         with allure.step("Нажать кнопку 'Создать аккаунт'"):
             home_page = HomePage(driver)
@@ -63,4 +65,3 @@ class TestUserRegistration:
             name="registration_success",
             attachment_type=allure.attachment_type.PNG
         )
-

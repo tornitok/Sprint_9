@@ -3,6 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.recipe_page import RecipePage
+from config import BASE_URL
 from data.test_data import EXISTING_USER_LOGIN, RECIPE_DATA
 
 
@@ -26,7 +27,7 @@ class TestRecipeCreation:
        - Отображается ли карточка созданного рецепта
        - Отображается ли название, которое заполняли при создании
     """)
-    def test_create_recipe(self, driver: WebDriver, base_url: str):
+    def test_create_recipe(self, driver: WebDriver):
         test_username = EXISTING_USER_LOGIN["username"]
         test_password = EXISTING_USER_LOGIN["password"]
         recipe_name = RECIPE_DATA["name"]
@@ -46,7 +47,7 @@ class TestRecipeCreation:
         )
 
         with allure.step("Открыть главную страницу"):
-            driver.get(base_url)
+            driver.get(BASE_URL)
 
         with allure.step("Авторизоваться"):
             home_page = HomePage(driver)

@@ -3,7 +3,7 @@ import os
 from typing import Generator
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
-from config import BASE_URL
+
 
 SELENIUM_URL = os.getenv("SELENIUM_URL", "http://localhost:4444/wd/hub")
 
@@ -29,7 +29,4 @@ def driver() -> Generator[WebDriver, None, None]:
     driver.quit()
 
 
-@pytest.fixture(scope="function")
-def base_url() -> str:
-    return BASE_URL
 
